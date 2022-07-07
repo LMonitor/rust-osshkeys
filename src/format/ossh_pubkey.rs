@@ -116,6 +116,10 @@ pub fn serialize_ossh_pubkey(key: &dyn PublicParts, comment: &str) -> OsshResult
 pub(crate) fn encode_rsa_pubkey<T: HasPublic + HasParams>(key: &RsaRef<T>) -> OsshResult<Vec<u8>> {
     let mut buf = io::Cursor::new(Vec::new());
 
+    // HACK: I have no idea if this is correct but it fixes the problem with a 0 public exponent!
+    if key.e().num_bytes() == 0 {
+        return Err(ErrorKind::InvalidKeyFormat.into());
+    }
     buf.write_utf8(RSA_NAME)?;
     buf.write_mpint(key.e())?;
     buf.write_mpint(key.n())?;
