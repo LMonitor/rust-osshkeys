@@ -8,6 +8,7 @@ use crate::format::pkcs8::*;
 use digest::{Digest, FixedOutputReset};
 use md5::Md5;
 use openssl::pkey::{Id, PKey, PKeyRef, Private, Public};
+use sha1::Sha1;
 use sha2::{Sha256, Sha512};
 use std::fmt;
 
@@ -22,6 +23,8 @@ pub mod rsa;
 
 /// The name of the MD5 hashing algorithm returned by [`FingerprintHash::name()`](enum.FingerprintHash.html#method.name)
 pub const MD5_NAME: &str = "MD5";
+/// The name of the sha1 algorithm returned by [`FingerprintHash::name()`](enum.FingerprintHash.html#method.name)
+pub const SHA1_NAME: &str = "SHA1";
 /// The name of the sha2-256 algorithm returned by [`FingerprintHash::name()`](enum.FingerprintHash.html#method.name)
 pub const SHA256_NAME: &str = "SHA256";
 /// The name of the sha2-512 algorithm returned by [`FingerprintHash::name()`](enum.FingerprintHash.html#method.name)
@@ -36,12 +39,15 @@ pub const SHA512_NAME: &str = "SHA512";
 /// # Hash Algorithm
 /// MD5: This is the default fingerprint type in older versions of openssh.
 ///
+/// SHA1
+///
 /// SHA2-256: Since OpenSSH 6.8, this became the default option of fingerprint.
 ///
 /// SHA2-512: Although not being documented, it can also be used.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum FingerprintHash {
     MD5,
+    SHA1,
     SHA256,
     SHA512,
 }
@@ -58,6 +64,7 @@ impl FingerprintHash {
         }
         match self {
             FingerprintHash::MD5 => digest_hash(&mut Md5::default(), data),
+            FingerprintHash::SHA1 => digest_hash(&mut Sha1::default(), data),
             FingerprintHash::SHA256 => digest_hash(&mut Sha256::default(), data),
             FingerprintHash::SHA512 => digest_hash(&mut Sha512::default(), data),
         }
@@ -65,6 +72,7 @@ impl FingerprintHash {
     fn name(self) -> &'static str {
         match self {
             FingerprintHash::MD5 => MD5_NAME,
+            FingerprintHash::SHA1 => SHA1_NAME,
             FingerprintHash::SHA256 => SHA256_NAME,
             FingerprintHash::SHA512 => SHA512_NAME,
         }
@@ -133,7 +141,6 @@ impl PublicKey {
             Ok(parse_ossh_pubkey(keystr)?)
         }
     }
-
     /// Indicate the key type being stored
     pub fn keytype(&self) -> KeyType {
         match &self.key {
