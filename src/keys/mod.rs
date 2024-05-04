@@ -4,6 +4,7 @@ use crate::format::ossh_privkey::*;
 use crate::format::ossh_pubkey::*;
 use crate::format::parse_keystr;
 use crate::format::pem::*;
+use crate::format::der::*;
 use crate::format::pkcs8::*;
 use digest::{Digest, FixedOutputReset};
 use md5::Md5;
@@ -166,6 +167,10 @@ impl PublicKey {
         serialize_ossh_pubkey(self, &self.comment)
     }
 
+    /// Serialize the public key as DER format
+    pub fn serialize_der(&self) -> OsshResult<Vec<u8>> {
+        to_der_pubkey(self)
+    }
     /// Serialize the public key as PEM format
     ///
     /// # Representation

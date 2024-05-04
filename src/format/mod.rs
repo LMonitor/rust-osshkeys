@@ -4,6 +4,7 @@ use crate::keys::*;
 pub mod ossh_privkey;
 pub mod ossh_pubkey;
 pub mod pem;
+pub mod der;
 pub mod pkcs8;
 
 pub fn parse_keystr(pem: &[u8], passphrase: Option<&str>) -> OsshResult<KeyPair> {
