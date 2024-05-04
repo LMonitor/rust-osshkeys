@@ -313,9 +313,10 @@ impl KeyPair {
     ///
     /// This is the new format which is supported since OpenSSH 6.5, and it became the default format in OpenSSH 7.8.
     /// The Ed25519 key can only be stored in this type.
-    pub fn from_keystr(pem: &str, passphrase: Option<&str>) -> OsshResult<Self> {
-        parse_keystr(pem.as_bytes(), passphrase)
+    pub fn from_keystr(pem: impl AsRef<[u8]>, passphrase: Option<&str>) -> OsshResult<Self> {
+        parse_keystr(pem.as_ref(), passphrase)
     }
+
 
     /// Generate a key of the specified type and size
     ///
