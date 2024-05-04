@@ -88,6 +88,17 @@ pub enum KeyType {
     ECDSA,
     ED25519,
 }
+impl std::fmt::Display for KeyType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match &self {
+            KeyType::RSA => write!(f, "RSA"),
+            KeyType::DSA => write!(f, "DSA"),
+            KeyType::ECDSA => write!(f, "ECDSA"),
+            KeyType::ED25519 => write!(f, "ED25519"),
+        }
+    }
+}
+
 
 #[allow(clippy::upper_case_acronyms)]
 #[derive(Debug, PartialEq)]
