@@ -29,17 +29,17 @@ experimental = []
 [dependencies]
 base64 = "0.21.0"
 byteorder = "1.4.3"
-openssl = "0.10.30"
+openssl = "0.10.64"
 rand = "0.8.5"
-ed25519-dalek = { version = "2.0.0-rc.2", features = ["rand_core"] }
+ed25519-dalek = { version = "2.1.1", features = ["rand_core"] }
 zeroize = "1.1.0"
 log = "0.4.8"
 backtrace = "0.3.46"
-pem = "2.0.1"
+pem = "3.0.4"
 regex = "1.8.3"
 digest = "0.10.2"
 md-5 = "0.10.0"
-sha-1 = "0.10.0"
+sha-1 = "0.10"
 sha2 = "0.10.1"
 bcrypt-pbkdf = "0.10.0"
 cryptovec = "0.6.1"
